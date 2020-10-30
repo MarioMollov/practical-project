@@ -42,16 +42,16 @@
                 <label class="mt-3" for="date">Допълнителна информация</label>
                 <div class="d-table bg-white">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="totalCases" value="totalCases">
-                        <label class="form-check-label" for="totalCases">Общ брой случаи</label>
+                        <input class="form-check-input" type="checkbox" id="totalCases-cb">
+                        <label class="form-check-label" for="totalCases-cb">Общ брой случаи</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="totalDeaths" value="totalDeaths">
-                        <label class="form-check-label" for="totalDeaths">Общ брой починали </label>
+                        <input class="form-check-input" type="checkbox" id="totalDeaths-cb">
+                        <label class="form-check-label" for="totalDeaths-cb">Общ брой починали </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="totalTests" value="totalTests">
-                        <label class="form-check-label" for="totalTests">Общ брой тествани</label>
+                        <input class="form-check-input" type="checkbox" id="totalTests-cb">
+                        <label class="form-check-label" for="totalTests-cb">Общ брой тествани</label>
                     </div>
                 </div>
                     <div>
@@ -61,26 +61,42 @@
         </div>
         <div class="row">
             <div class="col-6">
-                <div class="bg-white justify-content-center align-items-center">
-                    <div class="d-inline-block border border-danger">
-                        <h4 class=" m-3 text-weight-bold text-danger" >Новозаразени :</h4>
-                        <h4 class="m-3 text-danger"  id="newInfectet">15</h4>
+                <div class="justify-content-center align-items-center">
+                    <div class="d-inline-block border bg-danger divSize">
+                        <h4 class=" m-3 text-white" >Новозаразени :</h4>
+                        <h4 class="m-3 text-white justify-content-center"  id="newInfected"></h4>
                     </div>
-                    <div class="d-inline-block border border-info">
-                        <h4 class=" m-3 text-weight-bold text-info" >Активни :</h4>
-                        <h4 class="m-3 text-info" id="active">100</h4>
+                    <div class="d-inline-block border bg-info divSize">
+                        <h4 class=" m-3 text-white" >Активни :</h4>
+                        <h4 class="m-3 text-white justify-content-center" id="active"></h4>
                     </div>
-                    <div class="d-inline-block border border-warning">
-                        <h4 class=" m-3 text-weight-bold text-warning" >В болница :</h4>
-                        <h4 class="m-3 text-warning" id="critical">30</h4>
+                    <div class="d-inline-block border bg-warning divSize">
+                        <h4 class=" m-3 text-white" >В болница :</h4>
+                        <h4 class="m-3 text-white justify-content-center" id="critical"></h4>
                     </div>
-                    <div class="d-inline-block border border-success">
-                        <h4 class=" m-3 text-weight-bold text-success" >Излекувани :</h4>
-                        <h4 class="m-3 text-success" id="recovered">15</h4>
+                    <div class="d-inline-block border bg-success divSize">
+                        <h4 class=" m-3 text-white" >Излекувани :</h4>
+                        <h4 class="m-3 text-white justify-content-center" id="recovered"></h4>
                     </div>
-                    <div class="d-inline-block border border-secondary">
-                        <h4 class=" m-3 text-weight-bold text-secondary" >Починали :</h4>
-                        <h4 class="m-3 text-secondary" id="death">15</h4>
+                    <div class="d-inline-block border bg-secondary divSize">
+                        <h4 class=" m-3 text-white" >Починали :</h4>
+                        <h4 class="m-3 text-white justify-content-center" id="death"></h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col"-6>
+                <div class="justify-content-center align-items-center ">
+                    <div id="totalCases-div" class="d-none border bg-info optionalDivSize ">
+                        <h4 class=" m-3 text-weight-bold text-white" >Общ брой случаи :</h4>
+                        <h4 class="m-3 text-white"  id="totalCases"></h4>
+                    </div>
+                    <div id="totalDeaths-div" class="d-none border bg-danger optionalDivSize">
+                        <h4 class=" m-3 text-weight-bold text-white" >Общ брой починали :</h4>
+                        <h4 class="m-3 text-white"  id="totalDeaths"></h4>
+                    </div>
+                    <div id="totalTests-div" class="d-none border bg-warning optionalDivSize">
+                        <h4 class=" m-3 text-weight-bold text-white" >Общ брой тествани :</h4>
+                        <h4 class="m-3 text-white"  id="totalTests"></h4>
                     </div>
                 </div>
             </div>
@@ -92,24 +108,79 @@
     <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
     
     <script>
-        // $("#active").text(90);
+
         $(document).ready(function() {
 
-            let day = $("#day").val();
-            // let settings = {
-            //     "async": true,
-            //     "crossDomain": true,
-            //     "url": "https://covid-193.p.rapidapi.com//history?day=" +  + "-10-28&country=bulgaria",
-            //     "method": "GET",
-            //     "headers": {
-            //         "x-rapidapi-host": "covid-193.p.rapidapi.com",
-            //         "x-rapidapi-key": "9b73cb45b8msh13466e11c26860ep19ac0ajsn061d10b748a1"
-            //     }
-            // }
+            $("#btn-check").click(function() {
+                let selectedCountry = $("#selectCountry").val();
+                let selectedDay = $("#day").val();
+                let selectedMonth = $("#month").val();
+                let selectedYear = $("#year").val();
 
-            // $.ajax(settings).done(function (response) {
-            //     console.log(response);
-            // });
+                if(!selectedDay.charAt(1)){
+                    selectedDay = "0"+selectedDay;
+                }
+                if(!selectedMonth.charAt(1)){
+                    selectedMonth = "0"+selectedMonth;
+                }
+
+                let settings = {
+                    "async": true,
+                    "crossDomain": true,
+                    "url": "https://covid-193.p.rapidapi.com//history?day=" + selectedYear + "-" + selectedMonth + "-" + selectedDay + "&country=" + selectedCountry,
+                    "method": "GET",
+                    "headers": {
+                        "x-rapidapi-host": "covid-193.p.rapidapi.com",
+                        "x-rapidapi-key": "9b73cb45b8msh13466e11c26860ep19ac0ajsn061d10b748a1"
+                    }
+                }
+    
+                $.ajax(settings).done(function (response) {
+                    console.log(response);
+                    const cases = response.response[0].cases;
+                    const deaths = response.response[0].deaths;
+                    const tests = response.response[0].tests;
+
+                    $("#newInfected").text(cases.new);
+                    $("#active").text(cases.active);
+                    $("#critical").text(cases.critical);
+                    $("#recovered").text(cases.recovered);
+                    $("#death").text(deaths.new);
+
+                    $('#totalCases-cb').click(function() {
+                        if(this.checked) {
+                            $("#totalCases").text(cases.total);
+                            $("#totalCases-div").removeClass("d-none");
+                            $("#totalCases-div").addClass("d-inline-block");
+                        }else {
+                            $("#totalCases-div").removeClass("d-inline-block");
+                            $("#totalCases-div").addClass("d-none");
+                        }
+                    });
+
+                    $('#totalDeaths-cb').click(function() {
+                        if(this.checked) {
+                            $("#totalDeaths").text(deaths.total);
+                            $("#totalDeaths-div").removeClass("d-none");
+                            $("#totalDeaths-div").addClass("d-inline-block");
+                        }else {
+                            $("#totalDeaths-div").removeClass("d-inline-block");
+                            $("#totalDeaths-div").addClass("d-none");
+                        }
+                    });
+
+                    $('#totalTests-cb').click(function() {
+                        if(this.checked) {
+                            $("#totalTests").text(tests.total);
+                            $("#totalTests-div").removeClass("d-none");
+                            $("#totalTests-div").addClass("d-inline-block");
+                        }else {
+                            $("#totalTests-div").removeClass("d-inline-block");
+                            $("#totalTests-div").addClass("d-none");
+                        }
+                    });
+                });
+            })
         })
     </script>
 </body>

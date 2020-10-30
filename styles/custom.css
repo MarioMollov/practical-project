@@ -4,3 +4,13 @@ body {
 #checkbox-description {
   font-size: 0.7rem;
 }
+.divSize {
+  height: 100px;
+  width: 220px;
+  margin-bottom: 15px;
+}
+.optionalDivSize {
+  height: 125px;
+  width: 220px;
+  margin-bottom: 15px;
+}
