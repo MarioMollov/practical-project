@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     <link rel="stylesheet" href="styles/custom.css">
     <title>COVID-19 Statistics</title>
@@ -60,25 +61,31 @@
             </div>
         </div>
         <div class="row">
+            <div class="col">
+                <button id="btn-to-table" class="btn text-primary mx-1"><span class="fa fa-table fa-lg  "></span></button>
+                <button id="btn-to-list" class="btn mx-1"><span class="fa fa-list-alt fa-lg"></span></button>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-6">
                 <div class="justify-content-center align-items-center">
-                    <div class="d-inline-block border bg-danger divSize">
+                    <div class="d-inline-block border bg-danger divSize divBox">
                         <h4 class=" m-3 text-white" >Новозаразени :</h4>
                         <h4 class="m-3 text-white justify-content-center"  id="newInfected"></h4>
                     </div>
-                    <div class="d-inline-block border bg-info divSize">
+                    <div class="d-inline-block border bg-info divSize divBox">
                         <h4 class=" m-3 text-white" >Активни :</h4>
                         <h4 class="m-3 text-white justify-content-center" id="active"></h4>
                     </div>
-                    <div class="d-inline-block border bg-warning divSize">
-                        <h4 class=" m-3 text-white" >В болница :</h4>
+                    <div class="d-inline-block border bg-warning divSize divBox">
+                        <h4 class=" m-3 text-white" >Критични :</h4>
                         <h4 class="m-3 text-white justify-content-center" id="critical"></h4>
                     </div>
-                    <div class="d-inline-block border bg-success divSize">
+                    <div class="d-inline-block border bg-success divSize divBox">
                         <h4 class=" m-3 text-white" >Излекувани :</h4>
                         <h4 class="m-3 text-white justify-content-center" id="recovered"></h4>
                     </div>
-                    <div class="d-inline-block border bg-secondary divSize">
+                    <div class="d-inline-block border bg-secondary divSize divBox">
                         <h4 class=" m-3 text-white" >Починали :</h4>
                         <h4 class="m-3 text-white justify-content-center" id="death"></h4>
                     </div>
@@ -86,15 +93,15 @@
             </div>
             <div class="col"-6>
                 <div class="justify-content-center align-items-center ">
-                    <div id="totalCases-div" class="d-none border bg-info optionalDivSize ">
+                    <div id="totalCases-div" class="d-none border bg-info optionalDivSize optDivBox ">
                         <h4 class=" m-3 text-weight-bold text-white" >Общ брой случаи :</h4>
                         <h4 class="m-3 text-white"  id="totalCases"></h4>
                     </div>
-                    <div id="totalDeaths-div" class="d-none border bg-danger optionalDivSize">
+                    <div id="totalDeaths-div" class="d-none border bg-danger optionalDivSize optDivBox">
                         <h4 class=" m-3 text-weight-bold text-white" >Общ брой починали :</h4>
                         <h4 class="m-3 text-white"  id="totalDeaths"></h4>
                     </div>
-                    <div id="totalTests-div" class="d-none border bg-warning optionalDivSize">
+                    <div id="totalTests-div" class="d-none border bg-warning optionalDivSize optDivBox">
                         <h4 class=" m-3 text-weight-bold text-white" >Общ брой тествани :</h4>
                         <h4 class="m-3 text-white"  id="totalTests"></h4>
                     </div>
@@ -110,6 +117,35 @@
     <script>
 
         $(document).ready(function() {
+
+            $("#btn-to-table").click(function() {
+                $(".divBox").removeClass("d-flex");
+                $(".divBox").addClass("d-inline-block divSize");
+                $(this).addClass("text-primary");
+                $("#btn-to-list").removeClass("text-primary");
+                if(!$(".optDivBox").hasClass("d-none") || $(".optDivBox").hasClass("d-flex") ){
+                   if($(".optDivBox").hasClass("d-none")){
+                    $(".optDivBox").removeClass("d-none");
+                   }else {
+                    $(".optDivBox").removeClass("d-flex");
+                   }
+                    $(".optDivBox").addClass("d-inline-block optionalDivSize");
+                }
+            })
+            $("#btn-to-list").click(function() {
+                $(".divBox").removeClass("d-inline-block divSize");
+                $(".divBox").addClass("d-flex mb-2");
+                $(this).addClass("text-primary");
+                $("#btn-to-table").removeClass("text-primary");
+                if(!$(".optDivBox").hasClass("d-none") || $(".optDivBox").hasClass("d-inline-block")){
+                    if($(".optDivBox").hasClass("d-none")){
+                        $(".optDivBox").removeClass("d-none optionalDivSize");
+                    }else {
+                        $(".optDivBox").removeClass("d-inline-block optionalDivSize");
+                    }
+                    $(".optDivBox").addClass("d-flex mb-2");
+                }
+            })
 
             $("#btn-check").click(function() {
                 let selectedCountry = $("#selectCountry").val();
@@ -137,9 +173,15 @@
     
                 $.ajax(settings).done(function (response) {
                     console.log(response);
-                    const cases = response.response[0].cases;
-                    const deaths = response.response[0].deaths;
+                    let cases= response.response[0].cases;
+                    let deaths = response.response[0].deaths;
                     const tests = response.response[0].tests;
+                    let index =1;
+                    while(cases.new == null && deaths.new == null){
+                       cases.new = response.response[index].cases.new; 
+                       deaths.new = response.response[index].deaths.new; 
+                       index++;
+                    }
 
                     $("#newInfected").text(cases.new);
                     $("#active").text(cases.active);
@@ -151,9 +193,13 @@
                         if(this.checked) {
                             $("#totalCases").text(cases.total);
                             $("#totalCases-div").removeClass("d-none");
-                            $("#totalCases-div").addClass("d-inline-block");
+                            if($(".divBox").hasClass("d-inline-block")){
+                                $("#totalCases-div").addClass("d-inline-block");
+                            }else {
+                                $("#totalCases-div").addClass("d-flex");
+                            }
                         }else {
-                            $("#totalCases-div").removeClass("d-inline-block");
+                            $("#totalCases-div").removeClass("d-inline-block d-flex");
                             $("#totalCases-div").addClass("d-none");
                         }
                     });
@@ -162,9 +208,13 @@
                         if(this.checked) {
                             $("#totalDeaths").text(deaths.total);
                             $("#totalDeaths-div").removeClass("d-none");
-                            $("#totalDeaths-div").addClass("d-inline-block");
+                            if($(".divBox").hasClass("d-inline-block")){
+                                $("#totalDeaths-div").addClass("d-inline-block");
+                            }else {
+                                $("#totalDeaths-div").addClass("d-flex");
+                            }
                         }else {
-                            $("#totalDeaths-div").removeClass("d-inline-block");
+                            $("#totalDeaths-div").removeClass("d-inline-block d-flex");
                             $("#totalDeaths-div").addClass("d-none");
                         }
                     });
@@ -173,9 +223,13 @@
                         if(this.checked) {
                             $("#totalTests").text(tests.total);
                             $("#totalTests-div").removeClass("d-none");
-                            $("#totalTests-div").addClass("d-inline-block");
+                            if($(".divBox").hasClass("d-inline-block")){
+                                $("#totalTests-div").addClass("d-inline-block");
+                            }else {
+                                $("#totalTests-div").addClass("d-flex");
+                            }
                         }else {
-                            $("#totalTests-div").removeClass("d-inline-block");
+                            $("#totalTests-div").removeClass("d-inline-block d-flex");
                             $("#totalTests-div").addClass("d-none");
                         }
                     });
