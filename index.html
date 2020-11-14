@@ -92,16 +92,16 @@
                 </div>
             </div>
             <div class="col"-6>
-                <div class="justify-content-center align-items-center ">
-                    <div id="totalCases-div" class="d-none border bg-info optionalDivSize optDivBox ">
+                <div id = "optDivClass" class="justify-content-center align-items-center ">
+                    <div id="totalCases-div" class="d-none border bg-info optDivBox ">
                         <h4 class=" m-3 text-weight-bold text-white" >Общ брой случаи :</h4>
                         <h4 class="m-3 text-white"  id="totalCases"></h4>
                     </div>
-                    <div id="totalDeaths-div" class="d-none border bg-danger optionalDivSize optDivBox">
+                    <div id="totalDeaths-div" class="d-none border bg-danger optDivBox">
                         <h4 class=" m-3 text-weight-bold text-white" >Общ брой починали :</h4>
                         <h4 class="m-3 text-white"  id="totalDeaths"></h4>
                     </div>
-                    <div id="totalTests-div" class="d-none border bg-warning optionalDivSize optDivBox">
+                    <div id="totalTests-div" class="d-none border bg-warning optDivBox">
                         <h4 class=" m-3 text-weight-bold text-white" >Общ брой тествани :</h4>
                         <h4 class="m-3 text-white"  id="totalTests"></h4>
                     </div>
@@ -123,28 +123,36 @@
                 $(".divBox").addClass("d-inline-block divSize");
                 $(this).addClass("text-primary");
                 $("#btn-to-list").removeClass("text-primary");
-                if(!$(".optDivBox").hasClass("d-none") || $(".optDivBox").hasClass("d-flex") ){
-                   if($(".optDivBox").hasClass("d-none")){
-                    $(".optDivBox").removeClass("d-none");
-                   }else {
-                    $(".optDivBox").removeClass("d-flex");
-                   }
-                    $(".optDivBox").addClass("d-inline-block optionalDivSize");
-                }
+
+                // if($(".optDivBox").hasClass("d-flex")){
+                //     $(".optDivBox").removeClass("d-flex");
+                //     $(".optDivBox").addClass("d-inline-block optionalDivSize");
+                // }
+                $("#optDivClass > div").each(function () {
+                    if($(this).hasClass("d-flex")){
+                        alert(this.val);
+                        $(".optDivBox").removeClass("d-flex mb-2");
+                        $(".optDivBox").addClass("d-inline-block optionalDivSize");
+                    }
+                });
             })
             $("#btn-to-list").click(function() {
                 $(".divBox").removeClass("d-inline-block divSize");
                 $(".divBox").addClass("d-flex mb-2");
                 $(this).addClass("text-primary");
                 $("#btn-to-table").removeClass("text-primary");
-                if(!$(".optDivBox").hasClass("d-none") || $(".optDivBox").hasClass("d-inline-block")){
-                    if($(".optDivBox").hasClass("d-none")){
-                        $(".optDivBox").removeClass("d-none optionalDivSize");
-                    }else {
+
+                // if($(".optDivBox").hasClass("d-inline-block")){
+                //     $(".optDivBox").removeClass("d-inline-block optionalDivSize");
+                //     $(".optDivBox").addClass("d-flex mb-2");
+                // }
+                $("#optDivClass > div").each(function () {
+                    if($(this).hasClass("d-inline-block")){
+                        alert(this.val);
                         $(".optDivBox").removeClass("d-inline-block optionalDivSize");
+                        $(".optDivBox").addClass("d-flex mb-2");
                     }
-                    $(".optDivBox").addClass("d-flex mb-2");
-                }
+                });
             })
 
             $("#btn-check").click(function() {
@@ -194,12 +202,12 @@
                             $("#totalCases").text(cases.total);
                             $("#totalCases-div").removeClass("d-none");
                             if($(".divBox").hasClass("d-inline-block")){
-                                $("#totalCases-div").addClass("d-inline-block");
+                                $("#totalCases-div").addClass("d-inline-block optionalDivSize");
                             }else {
-                                $("#totalCases-div").addClass("d-flex");
+                                $("#totalCases-div").addClass("d-flex mb-2");
                             }
                         }else {
-                            $("#totalCases-div").removeClass("d-inline-block d-flex");
+                            $("#totalCases-div").removeClass("d-inline-block optionalDivSize d-flex bm-2");
                             $("#totalCases-div").addClass("d-none");
                         }
                     });
@@ -209,12 +217,12 @@
                             $("#totalDeaths").text(deaths.total);
                             $("#totalDeaths-div").removeClass("d-none");
                             if($(".divBox").hasClass("d-inline-block")){
-                                $("#totalDeaths-div").addClass("d-inline-block");
+                                $("#totalDeaths-div").addClass("d-inline-block optionalDivSize");
                             }else {
-                                $("#totalDeaths-div").addClass("d-flex");
+                                $("#totalDeaths-div").addClass("d-flex mb-2");
                             }
                         }else {
-                            $("#totalDeaths-div").removeClass("d-inline-block d-flex");
+                            $("#totalDeaths-div").removeClass("d-inline-block optionalDivSize d-flex bm-2");
                             $("#totalDeaths-div").addClass("d-none");
                         }
                     });
@@ -224,12 +232,12 @@
                             $("#totalTests").text(tests.total);
                             $("#totalTests-div").removeClass("d-none");
                             if($(".divBox").hasClass("d-inline-block")){
-                                $("#totalTests-div").addClass("d-inline-block");
+                                $("#totalTests-div").addClass("d-inline-block optionalDivSize");
                             }else {
-                                $("#totalTests-div").addClass("d-flex");
+                                $("#totalTests-div").addClass("d-flex mb-2");
                             }
                         }else {
-                            $("#totalTests-div").removeClass("d-inline-block d-flex");
+                            $("#totalTests-div").removeClass("d-inline-block optionalDivSize d-flex bm-2");
                             $("#totalTests-div").addClass("d-none");
                         }
                     });
