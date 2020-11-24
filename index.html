@@ -130,7 +130,6 @@
                 // }
                 $("#optDivClass > div").each(function () {
                     if($(this).hasClass("d-flex")){
-                        alert(this.val);
                         $(".optDivBox").removeClass("d-flex mb-2");
                         $(".optDivBox").addClass("d-inline-block optionalDivSize");
                     }
@@ -148,7 +147,6 @@
                 // }
                 $("#optDivClass > div").each(function () {
                     if($(this).hasClass("d-inline-block")){
-                        alert(this.val);
                         $(".optDivBox").removeClass("d-inline-block optionalDivSize");
                         $(".optDivBox").addClass("d-flex mb-2");
                     }
@@ -180,6 +178,21 @@
                 }
     
                 $.ajax(settings).done(function (response) {
+
+                    function checkboxState(cb_id, div_id){
+                        if($("#" + cb_id).prop("checked") == true) {
+                            $("#" + div_id).removeClass("d-none");
+                            if($(".divBox").hasClass("d-inline-block")){
+                                $("#" + div_id).addClass("d-inline-block optionalDivSize");
+                            }else {
+                                $("#" + div_id).addClass("d-flex mb-2");
+                            }
+                        }else {
+                            $("#" + div_id).removeClass("d-inline-block optionalDivSize d-flex bm-2");
+                            $("#" + div_id).addClass("d-none");
+                        }
+                    }
+                    
                     console.log(response);
                     let cases= response.response[0].cases;
                     let deaths = response.response[0].deaths;
@@ -198,48 +211,29 @@
                     $("#death").text(deaths.new);
 
                     $('#totalCases-cb').click(function() {
-                        if(this.checked) {
-                            $("#totalCases").text(cases.total);
-                            $("#totalCases-div").removeClass("d-none");
-                            if($(".divBox").hasClass("d-inline-block")){
-                                $("#totalCases-div").addClass("d-inline-block optionalDivSize");
-                            }else {
-                                $("#totalCases-div").addClass("d-flex mb-2");
-                            }
-                        }else {
-                            $("#totalCases-div").removeClass("d-inline-block optionalDivSize d-flex bm-2");
-                            $("#totalCases-div").addClass("d-none");
-                        }
+                        $("#totalCases").text(cases.total);
+                        checkboxState("totalCases-cb", "totalCases-div");
                     });
 
                     $('#totalDeaths-cb').click(function() {
-                        if(this.checked) {
-                            $("#totalDeaths").text(deaths.total);
-                            $("#totalDeaths-div").removeClass("d-none");
-                            if($(".divBox").hasClass("d-inline-block")){
-                                $("#totalDeaths-div").addClass("d-inline-block optionalDivSize");
-                            }else {
-                                $("#totalDeaths-div").addClass("d-flex mb-2");
-                            }
-                        }else {
-                            $("#totalDeaths-div").removeClass("d-inline-block optionalDivSize d-flex bm-2");
-                            $("#totalDeaths-div").addClass("d-none");
-                        }
+                        $("#totalDeaths").text(deaths.total);
+                        checkboxState("totalDeaths-cb", "totalDeaths-div");
                     });
 
                     $('#totalTests-cb').click(function() {
-                        if(this.checked) {
-                            $("#totalTests").text(tests.total);
-                            $("#totalTests-div").removeClass("d-none");
-                            if($(".divBox").hasClass("d-inline-block")){
-                                $("#totalTests-div").addClass("d-inline-block optionalDivSize");
-                            }else {
-                                $("#totalTests-div").addClass("d-flex mb-2");
-                            }
-                        }else {
-                            $("#totalTests-div").removeClass("d-inline-block optionalDivSize d-flex bm-2");
-                            $("#totalTests-div").addClass("d-none");
-                        }
+                        $("#totalTests").text(tests.total);
+                        checkboxState("totalTests-cb", "totalTests-div");
+                        // if(this.checked) {
+                        //     $("#totalTests-div").removeClass("d-none");
+                        //     if($(".divBox").hasClass("d-inline-block")){
+                        //         $("#totalTests-div").addClass("d-inline-block optionalDivSize");
+                        //     }else {
+                        //         $("#totalTests-div").addClass("d-flex mb-2");
+                        //     }
+                        // }else {
+                        //     $("#totalTests-div").removeClass("d-inline-block optionalDivSize d-flex bm-2");
+                        //     $("#totalTests-div").addClass("d-none");
+                        // }
                     });
                 });
             })
